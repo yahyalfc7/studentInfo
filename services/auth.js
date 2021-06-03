@@ -14,10 +14,10 @@ function RegisterNewUser(req) {
         return reject(error.details[0].message)
       }
       // check if email already exists
-      const emailExists = await User.findOne({ email: email })
-      if (emailExists) {
-        return reject('Email Already Exists')
-      }
+      // const emailExists = await User.findOne({ email: email })
+      // if (emailExists) {
+      //   return reject('Email Already Exists')
+      // }
 
       const user = User({
         name,
