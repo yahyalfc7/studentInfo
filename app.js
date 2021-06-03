@@ -19,6 +19,7 @@ app.get("/", function (req, res) {
   res.send("Hello World!");
 });
 
+
 mongoose.connect("mongodb://ec2-18-234-107-209.compute-1.amazonaws.com:27017/test", { useNewUrlParser: true, useUnifiedTopology: true }, (err, db) => {
   if (err) {
     console.log(err)
