@@ -56,7 +56,7 @@ app.get('/getInfo', async (req, res) => {
     // console.log(oauthClient.token);
     // console.log(oauthClient.token.access_token);
 
-    //This is wroking. We're using intuit oauth api for this. 
+    //This is wroking. Here we are getting company info after authentication and sending it back.
     const authResponce = await oauthClient.makeApiCall({
       //method: 'POST',
       // headers: {
