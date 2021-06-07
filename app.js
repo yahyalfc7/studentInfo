@@ -83,17 +83,23 @@ app.get('/getInfo', async (req, res) => {
     );
 
     /*
-    qbo.createAttachable({ Note: 'My File' }, function (err, attachable) {
-      if (err) console.error('errrrrr', err)
-      else console.log(attachable.Id)
-    })
-*/
-    const note = qbo.findAttachables({
-      Note: 'My file'
-    }, function (e, attachables) {
-      console.log('nooooo', attachables.QueryResponse.Attachable);
-      res.send(attachables)
-    })
+       qbo.createAttachable({ Note: 'My Newest File' }, function (err, attachable) {
+         if (err) console.error('errrrrr', err)
+         else {
+           console.log(attachable.Id)
+           res.send(attachable)
+         }
+       })
+         */
+    /*
+        const note = qbo.findAttachables({
+          Note: 'My File'
+        }, function (e, attachables) {
+          console.log('nooooo', attachables.QueryResponse.Attachable);
+          res.send(attachables)
+        })
+    */
+
 
     // console.log('myyy', accounts);
     //res.status(200).json(authResponce.json)
