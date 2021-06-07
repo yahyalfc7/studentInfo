@@ -37,16 +37,17 @@ app.get('/oauth2redirect', async (req, res) => {
   const parseRedirect = req.url;
   try {
     const authResponce = await oauthClient.createToken(parseRedirect)
-    // const tokenString = JSON.stringify(authResponce.getJson());
-    //res.status(200).json(tokenString);
+    const token = await oauthClient.getToken()
+    const tokenString = JSON.stringify(authResponce.getJson());
     res.redirect('/getInfo')
   } catch (err) {
-    console.log((err));
+    console.error((err));
     res.status(400).json(err)
   }
 })
 
 app.get('/getInfo', async (req, res) => {
+
   try {
     const companyID = oauthClient.getToken().realmId;
     const url = oauthClient.environment == 'sandbox'
@@ -63,6 +64,7 @@ app.get('/getInfo', async (req, res) => {
       //   'Content-Type': 'application/json',
       // },
       //body: JSON.stringify(body), 
+      // url: `${url}v3/company/${companyID}/companyinfo/${companyID}`
       url: `${url}v3/company/${companyID}/companyinfo/${companyID}`
     })
 
@@ -80,12 +82,23 @@ app.get('/getInfo', async (req, res) => {
       oauthClient.token.refresh_token
     );
 
-    // Error occurs here
-    qbo.getAccount()
+    /*
+    qbo.createAttachable({ Note: 'My File' }, function (err, attachable) {
+      if (err) console.error('errrrrr', err)
+      else console.log(attachable.Id)
+    })
+*/
+    const note = qbo.findAttachables({
+      Note: 'My file'
+    }, function (e, attachables) {
+      console.log('nooooo', attachables.QueryResponse.Attachable);
+      res.send(attachables)
+    })
 
-    res.status(200).json(authResponce.json)
+    // console.log('myyy', accounts);
+    //res.status(200).json(authResponce.json)
   } catch (err) {
-    console.log(err);
+    console.error(err);
     res.status(400).json(err)
   }
 });
