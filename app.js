@@ -91,7 +91,7 @@ app.get('/getInfo', async (req, res) => {
     const note = qbo.findAttachables({
       Note: 'My file'
     }, function (e, attachables) {
-      console.log('nooooo', attachables.QueryResponse.Attachable);
+      console.log('response', attachables.QueryResponse.Attachable);
       res.send(attachables)
     })
 
