@@ -99,10 +99,28 @@ app.get('/getInfo', async (req, res) => {
           res.send(attachables)
         })
     */
+    /*
+    qbo.createAccount({
+      Name: 'Yahya LFC',
+      "AccountType": "Expense"
+    }, (err, data) => {
+      if (err) console.error('errr', err)
+      else {
+        console.log(data)
+        res.send(data)
+      }
+    })
+    */
+    /*
+        qbo.findAccounts({}, (err, data) => {
+          if (err) console.error('errrrrr', err)
+          else {
+            res.send(data)
+          }
+        })
+    */
 
-
-    // console.log('myyy', accounts);
-    //res.status(200).json(authResponce.json)
+    res.status(200).json(authResponce.json)
   } catch (err) {
     console.error(err);
     res.status(400).json(err)
