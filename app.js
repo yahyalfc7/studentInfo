@@ -68,7 +68,6 @@ app.get('/getInfo', async (req, res) => {
       url: `${url}v3/company/${companyID}/companyinfo/${companyID}`
     })
 
-    // This is using the quickbooks api
     var qbo = new QuickBooks(
       oauthClient.clientId,
       oauthClient.clientSecret,
@@ -82,6 +81,32 @@ app.get('/getInfo', async (req, res) => {
       oauthClient.token.refresh_token
     );
 
+    /* Get the expenses */
+    // qbo.findPurchases({}, (err, data) => {
+    //   if (err) {
+    //     res.status(400).json(err)
+    //     throw new err
+    //   }
+    //   else {
+    //     console.log(data.QueryResponse.Purchase.length);
+    //     res.status(200).json(data.QueryResponse.Purchase)
+    //   }
+    // })
+
+    /* Get all accounts */
+    qbo.findAccounts({ Classification: 'Expense' }, (err, data) => {
+      if (err) {
+        throw err
+        console.error('errrrrr', err)
+        res.status(400).json(err)
+      }
+      else {
+        console.log(data.QueryResponse.Account.length);
+        res.status(200).json(data.QueryResponse.Account)
+      }
+    })
+
+
     /*
        qbo.createAttachable({ Note: 'My Newest File' }, function (err, attachable) {
          if (err) console.error('errrrrr', err)
@@ -90,16 +115,16 @@ app.get('/getInfo', async (req, res) => {
            res.send(attachable)
          }
        })
-         */
-    /*
+        
+    
         const note = qbo.findAttachables({
           Note: 'My File'
         }, function (e, attachables) {
           console.log('nooooo', attachables.QueryResponse.Attachable);
           res.send(attachables)
         })
-    */
-    /*
+    
+    
     qbo.createAccount({
       Name: 'Yahya LFC',
       "AccountType": "Expense"
@@ -110,17 +135,12 @@ app.get('/getInfo', async (req, res) => {
         res.send(data)
       }
     })
-    */
-    /*
-        qbo.findAccounts({}, (err, data) => {
-          if (err) console.error('errrrrr', err)
-          else {
-            res.send(data)
-          }
-        })
-    */
+  
 
-    res.status(200).json(authResponce.json)
+    
+*/
+
+    //   res.status(200).json(authResponce.json)
   } catch (err) {
     console.error(err);
     res.status(400).json(err)
