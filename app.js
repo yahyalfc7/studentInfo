@@ -81,30 +81,41 @@ app.get('/getInfo', async (req, res) => {
       oauthClient.token.refresh_token
     );
 
+
     /* Get the expenses */
     // qbo.findPurchases({}, (err, data) => {
     //   if (err) {
     //     res.status(400).json(err)
-    //     throw new err
+    //     throw err
     //   }
     //   else {
-    //     console.log(data.QueryResponse.Purchase.length);
     //     res.status(200).json(data.QueryResponse.Purchase)
     //   }
     // })
 
-    /* Get all accounts */
-    qbo.findAccounts({ Classification: 'Expense' }, (err, data) => {
+    qbo.findPurchases('', (err, data) => {
       if (err) {
-        throw err
-        console.error('errrrrr', err)
         res.status(400).json(err)
+        throw err
       }
       else {
-        console.log(data.QueryResponse.Account.length);
-        res.status(200).json(data.QueryResponse.Account)
+
+        res.status(200).json(data)
       }
     })
+
+    /* Get all accounts */
+    // qbo.findAccounts({ Classification: 'Revenue' }, (err, data) => {
+    //   if (err) {
+    //     throw err
+    //     console.error('errrrrr', err)
+    //     res.status(400).json(err)
+    //   }
+    //   else {
+    //     console.log(data.QueryResponse.Account.length);
+    //     res.status(200).json(data.QueryResponse.Account)
+    //   }
+    // })
 
 
     /*
