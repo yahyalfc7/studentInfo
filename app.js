@@ -12,8 +12,6 @@ app.get("/", function (req, res) {
   res.send("Hello World!");
 });
 
-const accessToken = 'esA1vboCcJr2QjGH6r6dfIMJvMX3'
-
 app.get('/auth', async (req, res) => {
   try {
     var myHeaders = new fetch.Headers();
@@ -36,7 +34,6 @@ app.get('/auth', async (req, res) => {
     let jsonResponse = await tokenResponse.json()
 
     // we get the access token and now we append it to our request
-    //res.send(token)
 
     var newHeaders = new fetch.Headers();
     newHeaders.append("Api-Version", "1.1");
@@ -50,11 +47,31 @@ app.get('/auth', async (req, res) => {
       redirect: 'follow'
     };
 
-    const response = await fetch("https://sandbox.api.yodlee.com/ysl/transactions?fromDate=2013-01-01", secondRequestOptions)
-    jsonResponse = await response.json()
-    const data = JSON.stringify(jsonResponse)
+    const providerResponse = await fetch("https://sandbox.api.yodlee.com/ysl/providers", secondRequestOptions)
+    const providers = await providerResponse.json()
 
-    res.send(jsonResponse)
+
+    const transactionResponse = await fetch("https://sandbox.api.yodlee.com/ysl/transactions/categories?fromDate=2013-01-01", secondRequestOptions)
+    const transactions = await transactionResponse.json()
+    const data = JSON.stringify(transactions);
+    fs.writeFile('transactioncategories.json', data, (err) => {
+      if (err) {
+        throw err;
+      }
+      console.log("JSON data is saved.");
+    });
+    return res.send(transactions)
+
+
+    const accountResponse = await fetch("https://sandbox.api.yodlee.com/ysl/accounts", secondRequestOptions)
+    const accounts = await accountResponse.json()
+
+    const userResponse = await fetch("https://sandbox.api.yodlee.com/ysl/user", secondRequestOptions)
+    const user = await userResponse.json()
+
+    const statementResponse = await fetch("https://sandbox.api.yodlee.com/ysl/statements", secondRequestOptions)
+    const statements = await statementResponse.json()
+    res.send(statements)
 
   } catch (err) {
     res.status(404).json(err)
