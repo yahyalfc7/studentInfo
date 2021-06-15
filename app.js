@@ -2,7 +2,8 @@ require("dotenv/config")
 const fetch = require("node-fetch");
 const express = require("express")
 const app = express()
-
+const cors = require('cors')
+app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json()); // convert into jsonn when responce comes
 
@@ -33,6 +34,10 @@ app.get('/auth', async (req, res) => {
     const tokenResponse = await fetch("https://sandbox.api.yodlee.com/ysl/auth/token", requestOptions)
     let jsonResponse = await tokenResponse.json()
 
+    res.setHeader('Content-Type', 'application/json');
+    res.setHeader('Accept', 'application/json')
+    res.status(200).json(jsonResponse.token)
+
     // we get the access token and now we append it to our request
 
     var newHeaders = new fetch.Headers();
@@ -47,31 +52,33 @@ app.get('/auth', async (req, res) => {
       redirect: 'follow'
     };
 
+    const userResponse = await fetch("https://sandbox.api.yodlee.com/ysl/user", secondRequestOptions)
+    const users = await userResponse.json()
+
     const providerResponse = await fetch("https://sandbox.api.yodlee.com/ysl/providers", secondRequestOptions)
     const providers = await providerResponse.json()
-
 
     const transactionResponse = await fetch("https://sandbox.api.yodlee.com/ysl/transactions/categories?fromDate=2013-01-01", secondRequestOptions)
     const transactions = await transactionResponse.json()
     const data = JSON.stringify(transactions);
-    fs.writeFile('transactioncategories.json', data, (err) => {
-      if (err) {
-        throw err;
-      }
-      console.log("JSON data is saved.");
-    });
-    return res.send(transactions)
+    // fs.writeFile('transactioncategories.json', data, (err) => {
+    //   if (err) {
+    //     throw err;
+    //   }
+    //   console.log("JSON data is saved.");
+    // });
+    // return res.send(transactions)
 
 
     const accountResponse = await fetch("https://sandbox.api.yodlee.com/ysl/accounts", secondRequestOptions)
     const accounts = await accountResponse.json()
 
-    const userResponse = await fetch("https://sandbox.api.yodlee.com/ysl/user", secondRequestOptions)
-    const user = await userResponse.json()
+    // const userResponse = await fetch("https://sandbox.api.yodlee.com/ysl/user", secondRequestOptions)
+    // const user = await userResponse.json()
 
     const statementResponse = await fetch("https://sandbox.api.yodlee.com/ysl/statements", secondRequestOptions)
     const statements = await statementResponse.json()
-    res.send(statements)
+    //    res.send(statements)
 
   } catch (err) {
     res.status(404).json(err)
